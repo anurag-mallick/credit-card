@@ -5,8 +5,8 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
-  // If deploying to a subfolder on GH Pages, set basePath
-  // basePath: '/credit-card',
+  basePath: '/credit-card',
+  assetPrefix: '/credit-card/',
 };
 
 export default nextConfig;
