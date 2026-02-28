@@ -39,11 +39,11 @@ export default function LandingPage() {
     utilities: 0,
     fuel: 0,
   });
-  const [recommendation, setRecommendation] = useState<{ 
+  const [recommendations, setRecommendations] = useState<{ 
     card: CreditCard, 
     savings: number,
     breakup: Record<string, number>
-  } | null>(null);
+  }[] | null>(null);
 
   const filteredCards = useMemo(() => {
     if (selectedCategory === 'all') return CREDIT_CARDS;
@@ -51,11 +51,7 @@ export default function LandingPage() {
   }, [selectedCategory]);
 
   const calculateSavings = () => {
-    let bestMatch = null;
-    let maxSavings = -Infinity;
-    let bestBreakup: Record<string, number> = {};
-
-    CREDIT_CARDS.forEach(card => {
+    const allResults = CREDIT_CARDS.map(card => {
       let cardBreakup: Record<string, number> = {};
       const monOnline = spends.online || 0;
       const monTravel = spends.travel || 0;
@@ -108,21 +104,11 @@ export default function LandingPage() {
       }
 
       const netSavings = totalRewards - fee;
-      
-      if (netSavings > maxSavings) {
-        maxSavings = netSavings;
-        bestMatch = card;
-        bestBreakup = cardBreakup;
-      }
+      return { card, savings: Math.round(netSavings), breakup: cardBreakup };
     });
 
-    if (bestMatch) {
-      setRecommendation({ 
-        card: bestMatch, 
-        savings: Math.round(maxSavings),
-        breakup: bestBreakup
-      });
-    }
+    const sorted = allResults.sort((a, b) => b.savings - a.savings).slice(0, 3);
+    setRecommendations(sorted);
   };
 
   return (
@@ -302,26 +288,26 @@ export default function LandingPage() {
               className="absolute inset-0 bg-slate-900/60 backdrop-blur-md"
               onClick={() => {
                 setShowQuiz(false);
-                setRecommendation(null);
+                setRecommendations(null);
               }}
             />
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 30 }}
-              className="relative w-full max-w-4xl bg-white border border-slate-200 rounded-[3rem] p-8 md:p-14 overflow-y-auto max-h-[90vh] custom-scrollbar shadow-2xl"
+              className="relative w-full max-w-5xl bg-white border border-slate-200 rounded-[3rem] p-8 md:p-14 overflow-y-auto max-h-[90vh] custom-scrollbar shadow-2xl"
             >
               <button 
                 onClick={() => {
                   setShowQuiz(false);
-                  setRecommendation(null);
+                  setRecommendations(null);
                 }}
                 className="absolute top-8 right-8 p-3 hover:bg-slate-50 rounded-full transition-all z-10"
               >
                 <X className="w-5 h-5 text-slate-400" />
               </button>
 
-              {!recommendation ? (
+              {!recommendations ? (
                 <div className="max-w-2xl mx-auto">
                   <header className="text-center mb-12">
                     <h2 className="text-4xl font-black mb-3 tracking-tighter uppercase leading-none">Recommendation Engine</h2>
@@ -370,84 +356,121 @@ export default function LandingPage() {
 
                   <button 
                     onClick={calculateSavings}
-                    className="w-full py-6 bg-indigo-600 hover:bg-indigo-500 text-white rounded-[1.5rem] font-black text-xl shadow-lg shadow-indigo-100 transition-all active:scale-[0.98] uppercase tracking-tighter"
+                    className="w-full py-6 bg-indigo-600 hover:bg-indigo-500 text-white rounded-1.5xl font-black text-xl shadow-lg shadow-indigo-100 transition-all active:scale-[0.98] uppercase tracking-tighter"
                   >
-                    Generate Best Card Suggestions
+                    Generate Top 3 Suggestions
                   </button>
                 </div>
               ) : (
                 <div className="text-center">
                   <div className="mb-12">
-                    <h2 className="text-5xl font-black mb-2 uppercase tracking-tighter leading-none">Optimal Suggestion</h2>
-                    <p className="text-slate-500 text-sm font-bold uppercase tracking-widest">Calculated Net Annual ROI</p>
+                    <h2 className="text-5xl font-black mb-2 uppercase tracking-tighter leading-none">Your Top 3 Suggestions</h2>
+                    <p className="text-slate-500 text-sm font-bold uppercase tracking-widest">Ranked by Mathematical ROI</p>
                   </div>
 
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-12 items-start text-left">
-                    <motion.div 
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="bg-slate-900 p-10 rounded-[2.5rem] text-white w-full relative overflow-hidden shadow-2xl"
-                    >
-                      <span className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-400 mb-6 block">
-                        🏅 Recommended Hero
-                      </span>
-                      <h3 className="text-3xl font-black mb-1 tracking-tighter uppercase leading-none">{recommendation.card.name}</h3>
-                      <p className="text-sm font-bold text-slate-500 mb-12 uppercase tracking-widest">{recommendation.card.bank}</p>
-                      
-                      <div className="flex flex-col">
-                        <span className="text-[10px] uppercase font-black text-slate-700 tracking-[0.2em] mb-2">Net Annual Savings</span>
-                        <div className="flex items-baseline gap-1">
-                           <span className="text-7xl font-black text-white tracking-tighter leading-none">
-                              ₹{(recommendation.savings / 1000).toFixed(1)}
+                  <div className="grid grid-cols-1 gap-8 mb-16 max-w-4xl mx-auto">
+                    {recommendations.map((rec, index) => (
+                      <motion.div 
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        key={rec.card.id}
+                        className={cn(
+                          "relative p-8 rounded-[2.5rem] text-left border transition-all duration-500",
+                          index === 0 
+                            ? "bg-slate-900 text-white border-slate-900 shadow-2xl scale-[1.02] z-10" 
+                            : "bg-white text-slate-900 border-slate-200 scale-[1.0]"
+                        )}
+                      >
+                        <div className="absolute top-8 right-10">
+                           <span className={cn(
+                             "text-4xl font-black uppercase tracking-tighter italic opacity-20",
+                             index === 0 ? "text-indigo-400" : "text-slate-400"
+                           )}>
+                              Rank #{index + 1}
                            </span>
-                           <span className="text-3xl font-black text-indigo-500 uppercase">K</span>
                         </div>
-                        <p className="text-slate-600 font-bold mt-6 uppercase text-[9px] tracking-[0.2em]">After Fees & Waiver Optimization</p>
-                      </div>
-                    </motion.div>
 
-                    <div className="w-full space-y-8">
-                      <div>
-                        <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4 px-2">
-                           Reward Breakup
-                        </h4>
-                        <div className="space-y-4 bg-slate-50 p-8 rounded-[2rem] border border-slate-200">
-                          {Object.entries(recommendation.breakup).map(([label, value]) => (
-                            <div key={label} className="flex justify-between items-center group">
-                              <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{label}</span>
-                              <span className="text-lg font-black text-slate-900 leading-none">₹{value.toLocaleString()}</span>
+                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+                          <div className="flex-1">
+                            <span className={cn(
+                              "text-[10px] font-black uppercase tracking-[0.3em] mb-4 block",
+                              index === 0 ? "text-indigo-400" : "text-indigo-600"
+                            )}>
+                              {index === 0 ? '🏆 Market Segment Leader' : '⭐ Strong Contender'}
+                            </span>
+                            <h3 className="text-3xl font-black mb-1 tracking-tighter uppercase leading-none">{rec.card.name}</h3>
+                            <p className={cn(
+                              "text-sm font-bold mb-8 uppercase tracking-widest",
+                              index === 0 ? "text-slate-500" : "text-slate-400"
+                            )}>{rec.card.bank}</p>
+
+                            <div className="grid grid-cols-2 gap-4">
+                              {Object.entries(rec.breakup).map(([label, value]) => (
+                                <div key={label}>
+                                  <p className={cn("text-[9px] font-black uppercase tracking-widest mb-1", index === 0 ? "text-slate-600" : "text-slate-400")}>{label}</p>
+                                  <p className="text-base font-black">₹{value.toLocaleString()}</p>
+                                </div>
+                              ))}
                             </div>
-                          ))}
-                          <div className="pt-4 mt-2 border-t border-slate-200 flex justify-between items-center text-rose-500 font-bold">
-                             <span className="text-[10px] uppercase tracking-widest">Annual Fee</span>
-                             <span className="text-lg"> -₹{recommendation.card.annualFee.toLocaleString()}</span>
+                          </div>
+
+                          <div className="flex flex-col items-center md:items-end justify-center px-8 py-6 bg-white/5 rounded-3xl border border-white/10 md:min-w-[200px]">
+                            <span className={cn(
+                              "text-[10px] uppercase font-black tracking-[0.2em] mb-2",
+                              index === 0 ? "text-slate-500" : "text-slate-400"
+                            )}>Net Annual ROI</span>
+                            <div className="flex items-baseline gap-1">
+                               <span className={cn(
+                                 "text-6xl font-black tracking-tighter leading-none",
+                                 index === 0 ? "text-white" : "text-slate-900"
+                               )}>
+                                  ₹{(rec.savings / 1000).toFixed(1)}
+                               </span>
+                               <span className="text-2xl font-black text-indigo-500 uppercase">K</span>
+                            </div>
+                            <p className={cn(
+                              "font-bold mt-4 uppercase text-[9px] tracking-[0.2em]",
+                              index === 0 ? "text-slate-600" : "text-slate-500"
+                            )}>After Fee: ₹{rec.card.annualFee.toLocaleString()}</p>
                           </div>
                         </div>
-                      </div>
-                      
-                      <div className="p-6 bg-indigo-50 rounded-2xl border border-indigo-100">
-                        <p className="text-[9px] font-black uppercase tracking-widest text-indigo-400 mb-1">Key Strategy</p>
-                        <p className="text-xs font-black text-slate-700 uppercase leading-snug tracking-tighter">{recommendation.card.bestFor}</p>
-                      </div>
-                    </div>
+
+                        <div className="mt-8 flex gap-4">
+                           <button 
+                             onClick={() => {
+                               setSelectedCard(rec.card);
+                               setShowQuiz(false);
+                             }}
+                             className={cn(
+                               "px-6 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all",
+                               index === 0 
+                                 ? "bg-indigo-600 text-white hover:bg-indigo-500" 
+                                 : "bg-slate-100 text-slate-900 hover:bg-slate-200"
+                             )}
+                           >
+                             Full Analysis
+                           </button>
+                           <div className={cn(
+                             "flex-1 px-6 py-3 rounded-xl border flex items-center gap-2",
+                             index === 0 ? "border-white/10 bg-white/5" : "border-slate-100 bg-slate-50"
+                           )}>
+                             <Sparkles className="w-3 h-3 text-indigo-500" />
+                             <span className={cn("text-[9px] font-black uppercase tracking-widest", index === 0 ? "text-slate-400" : "text-slate-500")}>
+                               Best For: {rec.card.bestFor}
+                             </span>
+                           </div>
+                        </div>
+                      </motion.div>
+                    ))}
                   </div>
 
-                  <div className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
+                  <div className="flex justify-center">
                     <button 
-                      onClick={() => setRecommendation(null)}
-                      className="flex-1 py-4 bg-white hover:bg-slate-50 text-slate-600 rounded-xl font-black uppercase tracking-widest text-[10px] transition-all border border-slate-200 active:scale-95 shadow-sm"
+                      onClick={() => setRecommendations(null)}
+                      className="py-4 px-12 bg-white hover:bg-slate-50 text-slate-600 rounded-xl font-black uppercase tracking-widest text-[10px] transition-all border border-slate-200 active:scale-95 shadow-sm"
                     >
-                      Refine Spends
-                    </button>
-                    <button 
-                      onClick={() => {
-                        setSelectedCard(recommendation.card);
-                        setRecommendation(null);
-                        setShowQuiz(false);
-                      }}
-                      className="flex-1 py-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-black uppercase tracking-widest text-[10px] shadow-md shadow-indigo-100 transition-all active:scale-95"
-                    >
-                      View Deep Analysis
+                      Refine Lifestyle Spends
                     </button>
                   </div>
                 </div>
