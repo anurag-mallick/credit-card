@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CreditCard as CardIcon, DollarSign, Plane, Fuel, Zap, Star, ShieldCheck, Info, X, Calculator, ArrowRight, TrendingUp, Sparkles, Trophy, Award, Landmark } from 'lucide-react';
 import { CREDIT_CARDS, LAST_UPDATED, type CreditCard } from '@/data/cards';
+import AdComponent from '@/components/AdComponent';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -147,15 +148,9 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 selection:bg-indigo-100">
-      {/* Top Banner */}
-      <div className="w-full h-12 gradient-primary flex items-center justify-center overflow-hidden">
-        <motion.p 
-          animate={{ x: [1000, -1000] }}
-          transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-          className="text-white text-[10px] font-black uppercase tracking-[0.4em] whitespace-nowrap"
-        >
-          Special Update: 50+ New Credit Cards Added • Precision ROI Engine v2.0 • Data Verified by Experts • Limited Time Analytics Access
-        </motion.p>
+      {/* Top Ad Unit */}
+      <div className="w-full bg-white/50 border-b border-slate-200/60 pb-1">
+        <AdComponent className="h-20" format="auto" />
       </div>
 
       <nav className="sticky top-0 z-40 bg-white/80 backdrop-blur-2xl border-b border-slate-200/60 py-4 px-6 md:px-12 flex justify-between items-center shadow-sm">
@@ -362,13 +357,12 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Ad Space */}
-        <div className="mt-32 max-w-4xl mx-auto h-40 bg-gradient-to-r from-slate-100/50 to-indigo-50/30 rounded-[3rem] flex flex-col items-center justify-center border border-slate-200 border-dashed relative overflow-hidden group">
-          <div className="absolute inset-0 shimmer opacity-50" />
-          <span className="text-slate-400 text-[10px] font-black uppercase tracking-[0.4em] mb-4 leading-none relative z-10">Premium Ad Inventory</span>
-          <div className="px-8 py-3 bg-white border border-slate-100 rounded-2xl text-slate-600 text-xs font-black uppercase tracking-[0.2em] leading-none shadow-sm relative z-10">
-             Google Ads Placement
-          </div>
+        {/* Middle Native Ad Unit */}
+        <div className="mt-32 max-w-5xl mx-auto rounded-[3.5rem] bg-white border border-slate-200/80 p-6 shadow-sm overflow-hidden">
+           <div className="flex justify-center items-center py-4 bg-slate-50 rounded-2xl mb-4">
+              <span className="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em]">Sponsored Content</span>
+           </div>
+           <AdComponent format="fluid" className="min-h-[250px]" />
         </div>
       </main>
 
