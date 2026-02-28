@@ -59,21 +59,20 @@ export default function LandingPage() {
       const monDining = spends.dining || 0;
       const monUtilities = spends.utilities || 0;
       const monFuel = spends.fuel || 0;
-      const monOther = 5000; 
 
       if (card.id === 'sbi-cashback') {
         const reward = Math.min(monOnline * 0.05, 5000);
-        const other = (monOther + monTravel + monDining) * 0.01;
+        const other = (monTravel + monDining) * 0.01;
         cardBreakup = { 'Online (5%)': reward * 12, 'Others (1%)': other * 12 };
       } 
       else if (card.id === 'hdfc-infinia') {
         const smartBuy = Math.min((monOnline * 0.4 + monTravel * 0.8) * 0.165, 15000);
-        const base = (monOnline * 0.6 + monTravel * 0.2 + monDining + monUtilities + monFuel + monOther) * 0.033;
+        const base = (monOnline * 0.6 + monTravel * 0.2 + monDining + monUtilities + monFuel) * 0.033;
         cardBreakup = { 'SmartBuy Accelerator': smartBuy * 12, 'Base Rewards (3.3%)': base * 12 };
       }
       else if (card.id === 'axis-atlas') {
         const travelMiles = (monTravel / 100) * 5 * 1.8;
-        const otherMiles = ((monOnline + monDining + monUtilities + monFuel + monOther) / 100) * 2 * 1.8;
+        const otherMiles = ((monOnline + monDining + monUtilities + monFuel) / 100) * 2 * 1.8;
         cardBreakup = { 'Travel Miles': travelMiles * 12, 'Base Miles': otherMiles * 12 };
       }
       else if (card.id === 'airtel-axis') {
@@ -84,17 +83,17 @@ export default function LandingPage() {
       }
       else if (card.id === 'amazon-pay-icici') {
         const amz = monOnline * 0.05;
-        const others = (monTravel + monDining + monUtilities + monFuel + monOther) * 0.01;
+        const others = (monTravel + monDining + monUtilities + monFuel) * 0.01;
         cardBreakup = { 'Amazon Prime': amz * 12, 'Others': others * 12 };
       }
       else {
-        const base = (monOnline + monTravel + monDining + monUtilities + monFuel + monOther) * 0.015;
+        const base = (monOnline + monTravel + monDining + monUtilities + monFuel) * 0.015;
         cardBreakup = { 'Reward Rate (1.5%)': base * 12 };
       }
 
       const totalRewards = Object.values(cardBreakup).reduce((a, b) => a + b, 0);
       let fee = card.annualFee;
-      const annualSpend = (monOnline + monTravel + monDining + monUtilities + monFuel + monOther) * 12;
+      const annualSpend = (monOnline + monTravel + monDining + monUtilities + monFuel) * 12;
       
       if (card.waiveCondition) {
         const match = card.waiveCondition.match(/₹(\d+)\s*Lakh|₹([\d,]+)/);
