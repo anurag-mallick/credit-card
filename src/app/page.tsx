@@ -50,66 +50,58 @@ export default function LandingPage() {
     return CREDIT_CARDS.filter(card => card.category === selectedCategory);
   }, [selectedCategory]);
 
-  const calculateSavings = () => {
-    const allResults = CREDIT_CARDS.map(card => {
-      let cardBreakup: Record<string, number> = {};
-      const monOnline = spends.online || 0;
-      const monTravel = spends.travel || 0;
-      const monDining = spends.dining || 0;
-      const monUtilities = spends.utilities || 0;
-      const monFuel = spends.fuel || 0;
-      const monOther = 5000; 
+  const categoryRankings = useMemo(() => {
+    return SPEND_CATEGORIES.map(cat => {
+      const results = CREDIT_CARDS.map(card => {
+        let cardBreakup: Record<string, number> = {};
+        const spends: Record<string, number> = { online: 0, travel: 0, dining: 0, utilities: 0, fuel: 0 };
+        spends[cat.id] = 50000; // Benchmark spend for comparison
 
-      if (card.id === 'sbi-cashback') {
-        const reward = Math.min(monOnline * 0.05, 5000);
-        const other = (monOther + monTravel + monDining) * 0.01;
-        cardBreakup = { 'Online (5%)': reward * 12, 'Others (1%)': other * 12 };
-      } 
-      else if (card.id === 'hdfc-infinia') {
-        const smartBuy = Math.min((monOnline * 0.4 + monTravel * 0.8) * 0.165, 15000);
-        const base = (monOnline * 0.6 + monTravel * 0.2 + monDining + monUtilities + monFuel + monOther) * 0.033;
-        cardBreakup = { 'SmartBuy Accelerator': smartBuy * 12, 'Base Rewards (3.3%)': base * 12 };
-      }
-      else if (card.id === 'axis-atlas') {
-        const travelMiles = (monTravel / 100) * 5 * 1.8;
-        const otherMiles = ((monOnline + monDining + monUtilities + monFuel + monOther) / 100) * 2 * 1.8;
-        cardBreakup = { 'Travel Miles': travelMiles * 12, 'Base Miles': otherMiles * 12 };
-      }
-      else if (card.id === 'airtel-axis') {
-        const telco = Math.min(monUtilities * 0.2, 300);
-        const utils = Math.min(monUtilities * 0.1, 300);
-        const food = Math.min(monDining * 0.1, 500);
-        cardBreakup = { 'Bills & Utilities': (telco + utils) * 12, 'Food Meta': food * 12 };
-      }
-      else if (card.id === 'amazon-pay-icici') {
-        const amz = monOnline * 0.05;
-        const others = (monTravel + monDining + monUtilities + monFuel + monOther) * 0.01;
-        cardBreakup = { 'Amazon Prime': amz * 12, 'Others': others * 12 };
-      }
-      else {
-        const base = (monOnline + monTravel + monDining + monUtilities + monFuel + monOther) * 0.015;
-        cardBreakup = { 'Reward Rate (1.5%)': base * 12 };
-      }
+        const monOnline = spends.online;
+        const monTravel = spends.travel;
+        const monDining = spends.dining;
+        const monUtilities = spends.utilities;
+        const monFuel = spends.fuel;
+        const monOther = 0;
 
-      const totalRewards = Object.values(cardBreakup).reduce((a, b) => a + b, 0);
-      let fee = card.annualFee;
-      const annualSpend = (monOnline + monTravel + monDining + monUtilities + monFuel + monOther) * 12;
-      
-      if (card.waiveCondition) {
-        const match = card.waiveCondition.match(/₹(\d+)\s*Lakh|₹([\d,]+)/);
-        if (match) {
-           const target = match[1] ? Number(match[1]) * 100000 : Number(match[2].replace(/,/g, ''));
-           if (annualSpend >= target) fee = 0;
+        if (card.id === 'sbi-cashback') {
+          const reward = Math.min(monOnline * 0.05, 5000);
+          cardBreakup = { 'ROI': reward };
+        } 
+        else if (card.id === 'hdfc-infinia') {
+          const smartBuy = Math.min((monOnline * 0.4 + monTravel * 0.8) * 0.165, 15000);
+          const base = (monOnline * 0.6 + monTravel * 0.2 + monDining + monUtilities + monFuel) * 0.033;
+          cardBreakup = { 'ROI': smartBuy + base };
         }
-      }
+        else if (card.id === 'axis-atlas') {
+          const travelMiles = (monTravel / 100) * 5 * 1.8;
+          const otherMiles = ((monOnline + monDining + monUtilities + monFuel) / 100) * 2 * 1.8;
+          cardBreakup = { 'ROI': travelMiles + otherMiles };
+        }
+        else if (card.id === 'airtel-axis') {
+          const telco = Math.min(monUtilities * 0.2, 300);
+          const utils = Math.min(monUtilities * 0.1, 300);
+          const food = Math.min(monDining * 0.1, 500);
+          cardBreakup = { 'ROI': telco + utils + food };
+        }
+        else if (card.id === 'amazon-pay-icici') {
+          const amz = monOnline * 0.05;
+          const others = (monTravel + monDining + monUtilities + monFuel) * 0.01;
+          cardBreakup = { 'ROI': amz + others };
+        }
+        else {
+          const base = (monOnline + monTravel + monDining + monUtilities + monFuel) * 0.015;
+          cardBreakup = { 'ROI': base };
+        }
 
-      const netSavings = totalRewards - fee;
-      return { card, savings: Math.round(netSavings), breakup: cardBreakup };
+        return { card, roi: Object.values(cardBreakup)[0] || 0 };
+      });
+      return {
+        category: cat,
+        topCards: results.sort((a, b) => b.roi - a.roi).slice(0, 3)
+      };
     });
-
-    const sorted = allResults.sort((a, b) => b.savings - a.savings).slice(0, 3);
-    setRecommendations(sorted);
-  };
+  }, []);
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 selection:bg-indigo-100">
@@ -184,15 +176,57 @@ export default function LandingPage() {
             </button>
             <button 
               onClick={() => {
-                const el = document.getElementById('card-explorer');
+                const el = document.getElementById('category-leaders');
                 el?.scrollIntoView({ behavior: 'smooth' });
               }}
               className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-slate-50 text-slate-900 border border-slate-200 rounded-2xl font-black text-base transition-all shadow-sm active:scale-95"
             >
-              Explore Library
+              Category Leaders
             </button>
           </motion.div>
         </header>
+
+        {/* Category Leaders Section */}
+        <section id="category-leaders" className="pt-24 mb-24">
+          <div className="mb-12">
+            <h2 className="text-4xl font-black uppercase tracking-tighter mb-2 leading-none">Category Leaders</h2>
+            <p className="text-slate-400 font-bold text-xs uppercase tracking-widest">Ranked by Specific Spend Efficiency</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            {categoryRankings.map((group) => (
+              <div key={group.category.id} className="bg-white border border-slate-200 rounded-3xl p-6 flex flex-col shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="p-2 rounded-xl bg-indigo-50 text-indigo-600">
+                    <group.category.icon className="w-4 h-4" />
+                  </div>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-900">{group.category.name}</span>
+                </div>
+                
+                <div className="space-y-4">
+                  {group.topCards.map((item, idx) => (
+                    <div 
+                      key={item.card.id} 
+                      className="cursor-pointer group"
+                      onClick={() => setSelectedCard(item.card)}
+                    >
+                      <div className="flex justify-between items-center mb-1">
+                        <span className={cn(
+                          "text-[9px] font-black italic",
+                          idx === 0 ? "text-indigo-600" : "text-slate-400"
+                        )}>#{idx + 1}</span>
+                        <span className="text-[8px] font-black text-slate-300 uppercase tracking-widest">{item.card.bank}</span>
+                      </div>
+                      <p className="text-[11px] font-black uppercase leading-tight group-hover:text-indigo-600 transition-colors">
+                        {item.card.name}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
 
         <div id="card-explorer" className="pt-16 mb-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
