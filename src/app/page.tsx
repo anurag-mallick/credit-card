@@ -650,6 +650,36 @@ export default function LandingPage() {
                 </div>
               </div>
 
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-16">
+                {/* Welcome Bonus */}
+                {selectedCard.welcomeBonus && (
+                  <div className="bg-amber-50/30 border border-amber-100/50 rounded-[2.5rem] p-8">
+                    <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-amber-600 mb-4 flex items-center gap-2">
+                      <Trophy className="w-4 h-4" /> Welcome Privilege
+                    </h4>
+                    <p className="text-xs font-bold text-slate-500 uppercase leading-relaxed tracking-wide">
+                      {selectedCard.welcomeBonus}
+                    </p>
+                  </div>
+                )}
+
+                {/* Eligibility */}
+                {selectedCard.eligibility && (
+                  <div className="bg-blue-50/30 border border-blue-100/50 rounded-[2.5rem] p-8">
+                    <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600 mb-4 flex items-center gap-2">
+                      <ShieldCheck className="w-4 h-4" /> Eligibility Criteria
+                    </h4>
+                    <ul className="space-y-2">
+                      {selectedCard.eligibility.map((item, i) => (
+                        <li key={i} className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                          <div className="w-1 h-1 rounded-full bg-blue-200" /> {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+
               <div className="bg-slate-50/80 rounded-[3rem] p-12 grid grid-cols-1 sm:grid-cols-3 gap-12 border border-slate-200/60 shadow-inner mb-12">
                 <div>
                   <p className="text-[10px] text-slate-400 uppercase tracking-[0.4em] font-black mb-3">Annual Maintenance</p>
@@ -665,16 +695,36 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              {selectedCard.limits && (
-                <div className="bg-indigo-50/30 border border-indigo-100/50 rounded-[2.5rem] p-10">
-                   <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-600 mb-4 flex items-center gap-2">
-                    <ShieldCheck className="w-4 h-4" /> Reward Caps & Exclusions
-                  </h4>
-                  <p className="text-xs font-bold text-slate-500 uppercase leading-relaxed tracking-wide">
-                    {selectedCard.limits}
-                  </p>
-                </div>
-              )}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                {/* Fees and Charges */}
+                {selectedCard.feesAndCharges && (
+                  <div className="bg-slate-50/50 border border-slate-200/50 rounded-[2.5rem] p-10">
+                    <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600 mb-8 flex items-center gap-2">
+                      <Landmark className="w-4 h-4" /> Fees & Finance
+                    </h4>
+                    <div className="space-y-6">
+                      {Object.entries(selectedCard.feesAndCharges).map(([label, value]) => (
+                        <div key={label} className="flex justify-between items-center border-b border-slate-100 pb-4">
+                          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{label}</span>
+                          <span className="text-[11px] font-black text-slate-900 uppercase tracking-tight">{value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Reward Caps & Exclusions */}
+                {selectedCard.limits && (
+                  <div className="bg-indigo-50/30 border border-indigo-100/50 rounded-[2.5rem] p-10">
+                    <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-600 mb-6 flex items-center gap-2">
+                        <Info className="w-4 h-4" /> Reward Policy 
+                    </h4>
+                    <p className="text-[11px] font-bold text-slate-500 uppercase leading-relaxed tracking-wide">
+                        {selectedCard.limits}
+                    </p>
+                  </div>
+                )}
+              </div>
             </motion.div>
           </div>
         )}

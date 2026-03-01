@@ -13,6 +13,9 @@ export interface CreditCard {
   waiveCondition?: string;
   bestFor: string;
   rating: number;
+  welcomeBonus?: string;
+  eligibility?: string[];
+  feesAndCharges?: Record<string, string>;
 }
 
 export const CREDIT_CARDS: CreditCard[] = [
@@ -34,7 +37,14 @@ export const CREDIT_CARDS: CreditCard[] = [
     joiningFee: 12500,
     waiveCondition: 'Waived on ₹10 Lakh annual spend',
     bestFor: 'Ultimate Luxury & Travel',
-    rating: 4.9
+    rating: 4.9,
+    welcomeBonus: '12,500 Reward Points upon fee payment and luxury ITC stay benefits.',
+    eligibility: ['Income: ₹3 Lakh+ monthly', 'Age: 21-65 years', 'Invite-only basis'],
+    feesAndCharges: {
+      'Joining Fee': '₹12,500 + GST',
+      'Annual Fee': '₹12,500 + GST',
+      'Forex Markup': '2% + GST'
+    }
   },
   {
     id: 'sbi-cashback',
@@ -59,7 +69,19 @@ export const CREDIT_CARDS: CreditCard[] = [
     joiningFee: 999,
     waiveCondition: 'Waived on ₹2 Lakh annual spend',
     bestFor: 'Universal Online Shopping',
-    rating: 4.8
+    rating: 4.8,
+    welcomeBonus: 'No specific welcome benefit. However, the 5% cashback on online spends is highly lucrative.',
+    eligibility: [
+      'Age: 21-60 years',
+      'Income: ₹20k+ monthly (for salaried professionals)',
+      'Credit Score: 750+'
+    ],
+    feesAndCharges: {
+      'Annual Fee': '₹999 + GST',
+      'Renewal Fee Waiver': 'Spend ₹2 Lakh annually',
+      'Cash Advance Fee': '2.5% or ₹500 (whichever is higher)',
+      'Finance Charges': '3.5% per month (42% annually)'
+    }
   },
   {
     id: 'axis-atlas',
@@ -79,7 +101,14 @@ export const CREDIT_CARDS: CreditCard[] = [
     joiningFee: 5000,
     waiveCondition: 'Waived on ₹15 Lakh for Gold / ₹30 Lakh for Platinum',
     bestFor: 'Travel & Airline Transfers',
-    rating: 4.7
+    rating: 4.7,
+    welcomeBonus: '5,000 Edge Miles upon joining and tiered milestone benefits.',
+    eligibility: ['Income: ₹1.5 Lakh+ monthly', 'Age: 21-70 years'],
+    feesAndCharges: {
+      'Joining Fee': '₹5,000 + GST',
+      'Annual Fee': '₹5,000 + GST',
+      'Forex Markup': '1.99% + GST'
+    }
   },
   {
     id: 'airtel-axis',
@@ -99,7 +128,14 @@ export const CREDIT_CARDS: CreditCard[] = [
     joiningFee: 500,
     waiveCondition: 'Waived on ₹2 Lakh annual spend',
     bestFor: 'Household Bills & Food Delivery',
-    rating: 4.6
+    rating: 4.6,
+    welcomeBonus: 'Amazon Voucher worth ₹500 on first transaction within 30 days.',
+    eligibility: ['Income: ₹50k+ monthly', 'Airtel Customer preferred'],
+    feesAndCharges: {
+      'Joining Fee': '₹500 + GST',
+      'Annual Fee': '₹500 + GST',
+      'Utility Capping': '₹300/month'
+    }
   },
   {
     id: 'amazon-pay-icici',
@@ -118,7 +154,14 @@ export const CREDIT_CARDS: CreditCard[] = [
     annualFee: 0,
     joiningFee: 0,
     bestFor: 'Amazon Shoppers & Beginners',
-    rating: 4.5
+    rating: 4.5,
+    welcomeBonus: 'Joining offer varies (usually ₹500 - ₹1500 Amazon Pay balance).',
+    eligibility: ['Existing ICICI Relationship preferred', 'Stable Income'],
+    feesAndCharges: {
+      'Joining Fee': '₹0 (Lifetime Free)',
+      'Annual Fee': '₹0 (Lifetime Free)',
+      'Forex Markup': '3.5% + GST'
+    }
   },
   {
     id: 'tata-neu-infinity',
@@ -138,7 +181,14 @@ export const CREDIT_CARDS: CreditCard[] = [
     joiningFee: 1499,
     waiveCondition: 'Waived on ₹3 Lakh annual spend',
     bestFor: 'UPI & Tata Shoppers',
-    rating: 4.7
+    rating: 4.7,
+    welcomeBonus: '1,499 NeuCoins on 1st transaction within 30 days.',
+    eligibility: ['Income: ₹1 Lakh+ monthly', 'Age: 21-60 years'],
+    feesAndCharges: {
+      'Joining Fee': '₹1,499 + GST',
+      'Annual Fee': '₹1,499 + GST',
+      'UPI Rewards': '1.5% NeuCoins'
+    }
   },
   {
     id: 'amex-platinum-travel',
@@ -178,7 +228,14 @@ export const CREDIT_CARDS: CreditCard[] = [
     joiningFee: 999,
     waiveCondition: 'Waived on ₹2 Lakh annual spend',
     bestFor: 'Dining out & Groceries',
-    rating: 4.6
+    rating: 4.6,
+    welcomeBonus: '₹1,000 Amazon Voucher on 1st transaction of ₹1,000 or more.',
+    eligibility: ['Income: ₹4 Lakh+ annual', 'Age: 18-65 years'],
+    feesAndCharges: {
+      'Joining Fee': '₹999 + GST',
+      'Annual Fee': '₹999 + GST',
+      'Dining Cashback': '10% (Capped)'
+    }
   },
   {
     id: 'sbi-bpcl-octane',
@@ -198,7 +255,14 @@ export const CREDIT_CARDS: CreditCard[] = [
     joiningFee: 1499,
     waiveCondition: 'Waived on ₹2 Lakh annual spend',
     bestFor: 'Heavy Fuel Users',
-    rating: 4.7
+    rating: 4.7,
+    welcomeBonus: '6,000 Bonus Points (Value: ₹1,500) on payment of joining fee.',
+    eligibility: ['Income: ₹30k+ monthly', 'Age: 21-70 years'],
+    feesAndCharges: {
+      'Joining Fee': '₹1,499 + GST',
+      'Annual Fee': '₹1,499 + GST',
+      'Fuel Surcharge': '1% Waiver'
+    }
   },
   {
     id: 'au-zenith-plus',
@@ -218,7 +282,14 @@ export const CREDIT_CARDS: CreditCard[] = [
     joiningFee: 4999,
     waiveCondition: 'Waived on ₹8 Lakh annual spend',
     bestFor: 'International Travel & Forex',
-    rating: 4.8
+    rating: 4.8,
+    welcomeBonus: 'Luxury Brand Vouchers worth ₹5,000 on 1st transaction.',
+    eligibility: ['Income: ₹2.5 Lakh+ monthly', 'Age: 21-60 years'],
+    feesAndCharges: {
+      'Joining Fee': '₹4,999 + GST',
+      'Annual Fee': '₹4,999 + GST',
+      'Forex Markup': '0.99% + GST'
+    }
   },
   {
     id: 'hdfc-dcb-metal',
@@ -238,7 +309,14 @@ export const CREDIT_CARDS: CreditCard[] = [
     joiningFee: 10000,
     waiveCondition: 'Waived on ₹8 Lakh annual spend',
     bestFor: 'High Reward Earners',
-    rating: 4.8
+    rating: 4.8,
+    welcomeBonus: 'Annual memberships (Amazon Prime, MMT BLACK) on joining.',
+    eligibility: ['Income: ₹1.75 Lakh+ monthly', 'Age: 21-65 years'],
+    feesAndCharges: {
+      'Joining Fee': '₹10,000 + GST',
+      'Annual Fee': '₹10,000 + GST',
+      'Reward Rate': '5% Global'
+    }
   },
   {
     id: 'axis-ace',
@@ -258,7 +336,14 @@ export const CREDIT_CARDS: CreditCard[] = [
     joiningFee: 499,
     waiveCondition: 'Waived on ₹2 Lakh annual spend',
     bestFor: 'Offline & Utility Spends',
-    rating: 4.6
+    rating: 4.6,
+    welcomeBonus: '₹500 Cashback on first 30 days of usage.',
+    eligibility: ['Income: ₹20k+ monthly', 'Age: 18-70 years'],
+    feesAndCharges: {
+      'Joining Fee': '₹499 + GST',
+      'Annual Fee': '₹499 + GST',
+      'Utility Rewards': '5% via GPay'
+    }
   },
   {
     id: 'icici-emerald-private',
@@ -278,7 +363,14 @@ export const CREDIT_CARDS: CreditCard[] = [
     joiningFee: 12500,
     waiveCondition: 'Waived for Private Banking clients',
     bestFor: 'Lounge & Lifestyle Perks',
-    rating: 4.7
+    rating: 4.7,
+    welcomeBonus: 'Exclusively for Private Banking customers; variable high-value joining gift.',
+    eligibility: ['ICICI Private Banking Relationship', 'Stable High Net Worth'],
+    feesAndCharges: {
+      'Joining Fee': '₹12,500 (Waived for Private)',
+      'Annual Fee': '₹12,500 (Waived for Private)',
+      'Forex Markup': '1.99% + GST'
+    }
   },
   {
     id: 'idfc-wealth',
@@ -297,7 +389,14 @@ export const CREDIT_CARDS: CreditCard[] = [
     annualFee: 0,
     joiningFee: 0,
     bestFor: 'High spenders wanting LTF',
-    rating: 4.7
+    rating: 4.7,
+    welcomeBonus: 'Gift vouchers worth ₹500 on spending ₹15k within 90 days.',
+    eligibility: ['Income: ₹36 Lakh+ annual', 'Age: 21-60 years'],
+    feesAndCharges: {
+      'Joining Fee': '₹0 (Lifetime Free)',
+      'Annual Fee': '₹0 (Lifetime Free)',
+      'Interest Rate': 'Starting 0.75% pm'
+    }
   },
   {
     id: 'yes-marquee',
@@ -317,7 +416,14 @@ export const CREDIT_CARDS: CreditCard[] = [
     joiningFee: 4999,
     waiveCondition: 'Waived on ₹10 Lakh annual spend',
     bestFor: 'High Online Rewards',
-    rating: 4.7
+    rating: 4.7,
+    welcomeBonus: '60,000 Reward Points (Value: ₹15,000) on joining fee payment.',
+    eligibility: ['Income: ₹3 Lakh+ monthly', 'Age: 21-60 years'],
+    feesAndCharges: {
+      'Joining Fee': '₹4,999 + GST',
+      'Annual Fee': '₹4,999 + GST',
+      'Forex Markup': '1.75% + GST'
+    }
   },
   {
     id: 'sc-ultimate',
@@ -336,7 +442,14 @@ export const CREDIT_CARDS: CreditCard[] = [
     annualFee: 5000,
     joiningFee: 5000,
     bestFor: 'Flat Cashback Lovers',
-    rating: 4.8
+    rating: 4.8,
+    welcomeBonus: '6,000 Reward Points (Value: ₹6,000) on fee payment.',
+    eligibility: ['Income: ₹2 Lakh+ monthly', 'Age: 21-65 years'],
+    feesAndCharges: {
+      'Joining Fee': '₹5,000 + GST',
+      'Annual Fee': '₹5,000 + GST',
+      'Reward Value': '1 RP = ₹1'
+    }
   },
   {
     id: 'amex-mrcc',
@@ -356,7 +469,14 @@ export const CREDIT_CARDS: CreditCard[] = [
     joiningFee: 1500,
     waiveCondition: 'Waived on ₹1.5 Lakh annual spend',
     bestFor: 'Consistent Small Spenders',
-    rating: 4.6
+    rating: 4.6,
+    welcomeBonus: '4,000 Bonus MR Points on spending ₹15k within 90 days.',
+    eligibility: ['Income: ₹6 Lakh+ annual', 'Age: 18+ years'],
+    feesAndCharges: {
+      'Joining Fee': '₹1,500 + GST',
+      'Annual Fee': '₹1,500 + GST',
+      'Reward Redemption': 'Gold Collection'
+    }
   },
   {
     id: 'flipkart-axis',
@@ -376,7 +496,14 @@ export const CREDIT_CARDS: CreditCard[] = [
     joiningFee: 500,
     waiveCondition: 'Waived on ₹2 Lakh annual spend',
     bestFor: 'Flipkart Shopping',
-    rating: 4.5
+    rating: 4.5,
+    welcomeBonus: 'Welcome vouchers worth ₹500 on 1st transaction.',
+    eligibility: ['Income: ₹15k+ monthly', 'Age: 18-70 years'],
+    feesAndCharges: {
+      'Joining Fee': '₹500 + GST',
+      'Annual Fee': '₹500 + GST',
+      'Forex Markup': '3.5% + GST'
+    }
   }
 ];
 
