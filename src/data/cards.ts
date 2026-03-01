@@ -47,8 +47,13 @@ export const CREDIT_CARDS: CreditCard[] = [
       'Direct statement credit',
     ],
     pros: ['Simple cashback structure', 'No merchant restrictions for online 5%', 'Wide acceptance'],
-    cons: ['Excludes Utilities, Rent, Fuel, and Insurance', 'No lounge access', 'Recent devaluation on fee waiver spend'],
-    limits: 'Monthly online cashback capped at ₹5,000.',
+    cons: [
+      'Excludes Education, Rent, Utilities, Fuel, and Insurance',
+      'Excludes Wallet loads, Jewellery, and Railway purchases',
+      'No lounge access (Primary or Add-on)',
+      'Recent devaluation on fee waiver spend requirement'
+    ],
+    limits: 'Monthly online cashback capped at ₹5,000. Cashback is not applicable on specific MCCs including 4900, 4814, 5960, 6300, etc.',
     image: 'https://www.sbicard.com/sbi-card-en/assets/media/images/personal/cards/cashback-sbi-card/cashback-sbi-card-front.png',
     annualFee: 999,
     joiningFee: 999,

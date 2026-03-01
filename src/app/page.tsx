@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CreditCard as CardIcon, DollarSign, Plane, Fuel, Zap, Star, ShieldCheck, Info, X, Calculator, ArrowRight, TrendingUp, Sparkles, Trophy, Award, Landmark } from 'lucide-react';
+import { CreditCard as CardIcon, DollarSign, Plane, Fuel, Zap, Star, ShieldCheck, Info, X, Calculator, ArrowRight, Sparkles, Trophy, Award, Landmark } from 'lucide-react';
 import { CREDIT_CARDS, LAST_UPDATED, type CreditCard } from '@/data/cards';
 import AdComponent from '@/components/AdComponent';
 import { clsx, type ClassValue } from 'clsx';
@@ -650,7 +650,7 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              <div className="bg-slate-50/80 rounded-[3rem] p-12 grid grid-cols-1 sm:grid-cols-3 gap-12 border border-slate-200/60 shadow-inner">
+              <div className="bg-slate-50/80 rounded-[3rem] p-12 grid grid-cols-1 sm:grid-cols-3 gap-12 border border-slate-200/60 shadow-inner mb-12">
                 <div>
                   <p className="text-[10px] text-slate-400 uppercase tracking-[0.4em] font-black mb-3">Annual Maintenance</p>
                   <p className="text-4xl font-black tracking-tighter text-slate-900 font-outfit">₹{selectedCard.annualFee.toLocaleString()}</p>
@@ -664,6 +664,17 @@ export default function LandingPage() {
                   <p className="text-sm font-black text-slate-700 uppercase leading-snug tracking-tighter">{selectedCard.bestFor}</p>
                 </div>
               </div>
+
+              {selectedCard.limits && (
+                <div className="bg-indigo-50/30 border border-indigo-100/50 rounded-[2.5rem] p-10">
+                   <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-600 mb-4 flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4" /> Reward Caps & Exclusions
+                  </h4>
+                  <p className="text-xs font-bold text-slate-500 uppercase leading-relaxed tracking-wide">
+                    {selectedCard.limits}
+                  </p>
+                </div>
+              )}
             </motion.div>
           </div>
         )}
