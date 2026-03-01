@@ -169,25 +169,27 @@ export const CREDIT_CARDS: CreditCard[] = [
     bank: 'HDFC Bank',
     category: 'Utilities',
     benefits: [
-      '5% NeuCoins on Tata Brands',
-      '1.5% NeuCoins on UPI Spends',
+      '5% NeuCoins on Tata Neu & partner brands',
+      '1.5% NeuCoins on UPI & Other Spends',
+      'Partner Brands: AirAsia, BigBasket, Croma, IHCL, Starbucks',
       '8 Complimentary Domestic Lounge visits',
     ],
-    pros: ['Versatile for Tata ecosystem (BigBasket, 1mg, Croma)', 'Best for RuPay UPI rewards', 'Good lounge access'],
+    pros: ['Versatile for Tata ecosystem', 'Best for RuPay UPI rewards', 'Good lounge access'],
     cons: ['NeuCoins expire', 'Restricted to Tata ecosystem redemption', 'UPI rewards capped'],
-    limits: 'UPI rewards capped at 500 NeuCoins per month.',
+    limits: 'UPI rewards capped at 500 NeuCoins per month. 1.5% Rewards on non-Tata spends.',
     image: 'https://www.hdfcbank.com/content/api/contentstream-id/723fb80a-2dde-42a3-9793-7ae1be57c87f/tata-neu-infinity.png',
     annualFee: 1499,
     joiningFee: 1499,
     waiveCondition: 'Waived on ₹3 Lakh annual spend',
     bestFor: 'UPI & Tata Shoppers',
     rating: 4.7,
-    welcomeBonus: '1,499 NeuCoins on 1st transaction within 30 days.',
+    welcomeBonus: '1,499 NeuCoins on 1st transaction on Tata Neu App within 30 days.',
     eligibility: ['Income: ₹1 Lakh+ monthly', 'Age: 21-60 years'],
     feesAndCharges: {
       'Joining Fee': '₹1,499 + GST',
       'Annual Fee': '₹1,499 + GST',
-      'UPI Rewards': '1.5% NeuCoins'
+      'Finance Charges': '3.49% per month (41.88% annually)',
+      'Forex Markup': '2% + GST'
     }
   },
   {
